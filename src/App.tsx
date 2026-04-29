@@ -15,18 +15,30 @@ import ReactorStats from "./parts/ReactorStats";
 
 function App() {
     const [reactor, setReactor] = useState<Reactor>(new Reactor());
-    const [simulateReactor, setSimulateReactor] = useState<Reactor | null>(null);
+    const [simulateReactor, setSimulateReactor] = useState<Reactor | null>(
+        null,
+    );
     const [selectedItem, setSelectedItem] = useState<ReactorItem | null>(null);
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
-    const [version, setVersion] = useState<{ mcVersion: string; gtVersion: string }>({
+    const [version, setVersion] = useState<{
+        mcVersion: string;
+        gtVersion: string;
+    }>({
         mcVersion: localStorage.getItem("mcVersion") || "1.7.10",
         gtVersion: localStorage.getItem("gtVersion") || "-",
     });
-    const [selectedRowAndCol, setSelectedRowAndCol] = useState<{ row: number; col: number }>({ row: 0, col: 0 });
+    const [selectedRowAndCol, setSelectedRowAndCol] = useState<{
+        row: number;
+        col: number;
+    }>({ row: 0, col: 0 });
     const [outputLines, setOutputLines] = useState<string[]>([]);
 
     const languageState =
-        localStorage.getItem("lang") === "zh_cn" || (localStorage.getItem("lang") == null && navigator.language.includes("zh")) ? lang.zh : lang.en;
+        localStorage.getItem("lang") === "zh_cn" ||
+        (localStorage.getItem("lang") == null &&
+            navigator.language.includes("zh"))
+            ? lang.zh
+            : lang.en;
 
     const toggleLanguage = () => {
         const next = languageState === lang.zh ? lang.en : lang.zh;
@@ -36,11 +48,11 @@ function App() {
 
     useEffect(() => {
         const loadData = async () => {
-            const langsRes = await fetch("/data/langs.json");
+            const langsRes = await fetch("./data/langs.json");
             const langsData: LangsJson = await langsRes.json();
             LanguageLoader.initLanguageLoader(langsData, languageState);
 
-            const allRes = await fetch("/data/all_data.json");
+            const allRes = await fetch("./data/all_data.json");
             const allData: AllData = await allRes.json();
             ImageLoader.initImages(allData.image);
             ItemLoader.initItems(allData.items);
@@ -109,7 +121,10 @@ function App() {
                             </svg>
                         </div>
                         <div className="ReactorCode">
-                            <ReactorCode reactor={reactor} onReactorChange={setReactor} />
+                            <ReactorCode
+                                reactor={reactor}
+                                onReactorChange={setReactor}
+                            />
                         </div>
                         <div className="ReactorStats">
                             <ReactorStats
