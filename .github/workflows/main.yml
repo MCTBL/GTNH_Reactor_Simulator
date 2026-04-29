@@ -28,6 +28,10 @@ jobs:
           npm install
           npm run build
 
+      - name: cp data
+        run: |
+          cp data/ dist/data -r
+
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
