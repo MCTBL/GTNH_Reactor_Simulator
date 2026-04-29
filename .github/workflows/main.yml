@@ -1,0 +1,35 @@
+name: Compile and deploy
+
+on: 
+  # pull_request:
+  #   types:
+  #   - closed
+  #   branches:
+  #   - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Shanghai
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: check node
+        run: node -v
+        
+      - name: install
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist # The folder the action should deploy.
+          branch: gh-pages
